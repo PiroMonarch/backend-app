@@ -65,7 +65,7 @@ userschema.methods.generateAccessToken = function (){
          { _id: this._id,
             email: this.email,
             username: this.username,
-            fullname: this.fullname
+            fullName: this.fullname
    
 
 
