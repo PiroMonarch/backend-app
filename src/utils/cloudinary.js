@@ -28,10 +28,12 @@ import fs from "fs";
 
         )
         // file has been uploaded successsfully
-        console.log("file has been uploaded on cloudinary",
-            response.url);
-            return response
+        //ole.log("file has been uploaded on cloudinary",
+          //response.url);
+          fs.unlinkSync(localFilePath) //remove the locally saved temporary file
+            return response;
 
+            
         
     } catch (error) {
         fs.unlinkSync(localFilePath) //remove the locally saved temporary file as the upload operation got
