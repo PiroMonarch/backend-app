@@ -11,7 +11,7 @@ const asyncHandler = (requesthandler)=> {
 
 
 
-export {asynchandler}
+export {asyncHandler} // Fixed: Capital 'H' to match import
 
 /*const asynchandler = (fn) => {
     return (req, res, next) => {

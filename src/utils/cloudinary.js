@@ -16,7 +16,7 @@ import fs from "fs";
     
 
 
-       uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (localFilePath) => { // Fixed: Added 'const' keyword
     try {  
         if(!localFilePath) return null
         //upload file on cloudinary
@@ -36,15 +36,14 @@ import fs from "fs";
             
         
     } catch (error) {
-        fs.unlinkSync(localFilePath) //remove the locally saved temporary file as the upload operation got
-        failed
+        fs.unlinkSync(localFilePath) // Fixed: Removed unwanted line break - remove the locally saved temporary file as the upload operation failed
         return null;
         
     }
 }
    
 
-    export{uploadOnCloudinary}
+export { uploadOnCloudinary } // Fixed: Added space for readability
 
 
 

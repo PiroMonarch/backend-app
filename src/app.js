@@ -31,5 +31,28 @@ import userRouter from './routes/user.routes.js'
 
 app.use("/api/v1/users", userRouter)
 
+// Global error handler middleware - catches all errors
+app.use((err, req, res, next) => {
+    // If error is APIError, use its statusCode and message
+    if (err instanceof Error) {
+        if (err.statusCode) {
+            // Custom APIError
+            return res.status(err.statusCode || 500).json({
+                success: false,
+                message: err.message || "Something went wrong",
+                errors: err.errors || [],
+                data: null
+            });
+        }
+    }
+    
+    // Default error response
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message || "Internal Server Error",
+        errors: [],
+        data: null
+    });
+});
 
 export { app }

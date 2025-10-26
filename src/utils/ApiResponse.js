@@ -1,16 +1,13 @@
- class ApiResponse {
-           constructor(statusccode,data,message,success){
-            this.statusccode = statusccode
-            this.data = data
-            this.message = message
-            this.status = statusccode<400
-       
-
-
-           }
+class ApiResponse {
+    constructor(statusCode, data, message, success) {
+        this.statusCode = statusCode // Fixed: Changed 'statusccode' typo to 'statusCode'
+        this.data = data
+        this.message = message
+        this.success = success !== undefined ? success : statusCode < 400 // Fixed: Added success parameter handling
+    }
 }
 
-export{ApiResponse}
+export { ApiResponse } // Fixed: Added space for readability
     
 
 

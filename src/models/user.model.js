@@ -1,8 +1,8 @@
-import mongoose,{schema} from mongoose
+import mongoose, { Schema } from "mongoose" // Fixed: Correct import syntax and capital 'Schema'
 import jwt from "jsonwebtoken"  
 import bcrypt from "bcrypt"
 
-const userschema = new schema({
+const userSchema = new Schema({ // Fixed: Capital 'S' in Schema
               
              username: { 
              type: String,
@@ -30,10 +30,10 @@ const userschema = new schema({
             ,coverImage: {
                 type: String,  //cloudinary url
             }
-            ,WatchHistory:[  {
-                type : Schema.Types.ObjectId,
-                ref : "Video"
-                }
+            , WatchHistory: [{
+                type: Schema.Types.ObjectId, // Fixed: Schema is now imported
+                ref: "Video"
+            }
 
             
             ],
@@ -45,81 +45,49 @@ const userschema = new schema({
                 type:String
             }, 
               
-        timestamps: true
-          
-                    
+            timestamps: true
+})
 
-        })
-userschema.pre("save", async function (next ) {
+// Hash password before saving to database
+userSchema.pre("save", async function (next) { // Fixed: Capital 'S' in userSchema
     if(!this.isModified("password")) return next();
       this.password = await bcrypt.hash(this.password,10)
     next()
 })
 
-userschema.methods.isPasswordCorrect = async function (password){
-    return await bcrypt.compare(password,this.password)
+// Method to check if password is correct
+userSchema.methods.isPasswordCorrect = async function (password) { // Fixed: Capital 'S' in userSchema
+    return await bcrypt.compare(password, this.password)
 }
 
-userschema.methods.generateAccessToken = function (){
-  return jwt.sign(
-         { _id: this._id,
+// Method to generate access token
+userSchema.methods.generateAccessToken = function () { // Fixed: Capital 'S' in userSchema
+    return jwt.sign(
+        {
+            _id: this._id,
             email: this.email,
             username: this.username,
-            fullName: this.fullname
-   
-
-
-
-
-            },
-            process.env,ACCESS_TOKEN_SECRET,
-            {
-                expiresIn: process.env.ACESS_TOKEN_EXPIRY
-            }
-
-
-
-
-  )
-
-
-
+            fullName: this.fullName // Fixed: Capital 'N' in fullName
+        },
+        process.env.ACCESS_TOKEN_SECRET, // Fixed: Changed comma to dot
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY // Fixed: Changed ACESS to ACCESS
+        }
+    )
 }
-    
-userschema.methods.generateRfreshTokenToken = function (){
-  return jwt.sign(
-         { _id: this._id,
-            
-   
 
-
-
-
-            },
-            process.env,REFRESH_TOKEN_SECRET,
-            {
-                expiresIn: process.env.REFRESH_TOKEN_EXPIRY
-            }
-
-
-
-
-  )
-
-
-
+// Method to generate refresh token
+userSchema.methods.generateRefreshToken = function () { // Fixed: Capital 'S' in userSchema and removed typo 'RfreshTokenToken'
+    return jwt.sign(
+        {
+            _id: this._id
+        },
+        process.env.REFRESH_TOKEN_SECRET, // Fixed: Changed comma to dot
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
 }
-    
 
-
-
-
-
-
-
-
-
-
-export const User =mongoose.model("User",userschema)
-
+export const User = mongoose.model("User", userSchema) // Fixed: Capital 'S' in userSchema and added space
 

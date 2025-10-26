@@ -1,8 +1,8 @@
 import { asyncHandler } from "../utils/asynchandler.js";
-import{APIError} from "../utils/appError.js";
+import { APIError } from "../utils/APIError.js"; // Fixed: Correct import path for APIError
+import { ApiResponse } from "../utils/ApiResponse.js";
 import {User} from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
 
 
 
@@ -25,14 +25,14 @@ const registerUser = asyncHandler( async(req,res) => {
                 if (
                      [ fullName,email,username,password].some((field) => 
                     field?.trim() === "")) 
-                 {throw new APIError("all fields are required",400)}        
+                 {throw new APIError(400, "all fields are required")}        
 
                  const existedUser = await User.findOne({
                     $or: [{email},{username}]
                  })
 
                  if(existedUser){
-                    throw new APIError("user with email or username already exists",400)
+                    throw new APIError(400, "user with email or username already exists")
                  }
 
                  const avatarLocalPath =req.files?.avatar[0]?.path;
@@ -56,7 +56,7 @@ const registerUser = asyncHandler( async(req,res) => {
                const user = await User.create({
                     fullName,
                     email, 
-                     username: username.toLowercase(),
+                     username: username.toLowerCase(), // Fixed: toLowercase() should be toLowerCase()
                                           avatar: avatar.url,
                      coverImage: coverImage?.url,
                      password
